@@ -19,8 +19,10 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.springframework.boot:spring-boot-starter-web' // Needed for the REST endpoints
-	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0' //Needed for Swagger
+	//Needed for my rest endpoints
+	implementation 'org.springframework.boot:spring-boot-starter-web' 
+	//Needed for Swagger
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0' 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

@@ -22,4 +22,11 @@ public class PhotoController {
         photos.add(photoName);
         return "Photo added successfully: " + photoName;
     }
+
+    //Temp test endpoint to ensure that I have endpoints working properly
+    @GetMapping("/test")
+        public String testEndpoint() {
+        return "Test Endpoint Working";
+    }
+
 }
