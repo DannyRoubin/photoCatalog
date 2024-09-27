@@ -1,3 +1,4 @@
+
 package com.dev.photoCatalog.model;
 
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ public class Photo {
     private int photoID;
 
     @Column(nullable = false, unique = true)
-    private UUID photoGUID;  
+    private UUID photoGUID;
 
     @Column(nullable = false)
     private String fileName;
@@ -19,7 +20,13 @@ public class Photo {
     @Column(nullable = false)
     private java.sql.Timestamp timeStamp;
 
-    // my getters and setters for photo
+    // Constructors
+    public Photo() {
+        // Initialize photoGUID with a new UUID
+        this.photoGUID = UUID.randomUUID();
+    }
+
+    // Getters and Setters
     public int getPhotoID() {
         return photoID;
     }

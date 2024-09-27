@@ -1,5 +1,10 @@
 package com.dev.photoCatalog.repository;
 
-public class PhotoRepository {
-    
+import com.dev.photoCatalog.model.Photo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PhotoRepository extends JpaRepository<Photo, Integer> {
+
 }

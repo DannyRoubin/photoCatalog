@@ -1,32 +1,47 @@
 package com.dev.photoCatalog.controller;
 
+import com.dev.photoCatalog.model.Photo;
+import com.dev.photoCatalog.service.PhotoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/photos")
+@RequestMapping("/photos")
 public class PhotoController {
 
-    private List<String> photos = new ArrayList<>();
+    @Autowired
+    private PhotoService photoService;
 
-    // GET endpoint to retrieve all photos
+    // Get all photos
     @GetMapping
-    public List<String> getAllPhotos() {
-        return photos;
+    public List<Photo> getAllPhotos() {
+        return photoService.getAllPhotos();
     }
 
-    // POST endpoint to add a new photo
+    // Get a specific photo by ID
+    @GetMapping("/{id}")
+    public Photo getPhotoById(@PathVariable int id) {
+        return photoService.getPhotoById(id);
+    }
+
+    // Add a new photo
     @PostMapping
-    public String addPhoto(@RequestParam String photoName) {
-        photos.add(photoName);
-        return "Photo added successfully: " + photoName;
+    public Photo addPhoto(@RequestBody Photo photo) {
+        return photoService.addPhoto(photo);
     }
 
-    //Temp test endpoint to ensure that I have endpoints working properly
-    @GetMapping("/test")
-        public String testEndpoint() {
-        return "Test Endpoint Working";
+    // Update an existing photo
+    @PutMapping("/{id}")
+    public Photo updatePhoto(@PathVariable int id, @RequestBody Photo photo) {
+        return photoService.updatePhoto(id, photo);
     }
 
+    // Delete a photo by ID
+    @DeleteMapping("/{id}")
+    public String deletePhoto(@PathVariable int id) {
+        photoService.deletePhoto(id);
+        return "Photo deleted successfully.";
+    }
 }
