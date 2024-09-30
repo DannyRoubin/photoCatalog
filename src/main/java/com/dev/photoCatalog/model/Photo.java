@@ -1,4 +1,3 @@
-
 package com.dev.photoCatalog.model;
 
 import jakarta.persistence.*;
@@ -8,11 +7,11 @@ import java.util.UUID;
 public class Photo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-generate photoID
     private int photoID;
 
     @Column(nullable = false, unique = true)
-    private UUID photoGUID;
+    private UUID photoGUID;  // UUID is manually generated, no need for @GeneratedValue
 
     @Column(nullable = false)
     private String fileName;
@@ -20,10 +19,16 @@ public class Photo {
     @Column(nullable = false)
     private java.sql.Timestamp timeStamp;
 
-    // Constructors
+    // Default constructor
     public Photo() {
-        // Initialize photoGUID with a new UUID
+        this.photoGUID = UUID.randomUUID();  // Manually generate UUID
+    }
+
+    // Parameterized constructor
+    public Photo(String fileName, java.sql.Timestamp timeStamp) {
         this.photoGUID = UUID.randomUUID();
+        this.fileName = fileName;
+        this.timeStamp = timeStamp;
     }
 
     // Getters and Setters
