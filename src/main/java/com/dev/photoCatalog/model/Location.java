@@ -1,18 +1,18 @@
 package com.dev.photoCatalog.model;
 
-import jakarta.persistence.*;  
+import jakarta.persistence.*;
 
 @Entity
 public class Location {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int locationID;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 256)
     private String locationName;
 
-    // my getters and setters
+    // getters and setters
     public int getLocationID() {
         return locationID;
     }

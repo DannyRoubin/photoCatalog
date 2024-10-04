@@ -5,6 +5,7 @@ import com.dev.photoCatalog.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,5 +46,9 @@ public class PhotoService {
     // Delete a photo by ID
     public void deletePhoto(int id) {
         photoRepository.deleteById(id);
+    }
+
+    public Photo getPhotoByGUID(UUID photoGUID) {
+        return photoRepository.findByPhotoGUID(photoGUID);
     }
 }

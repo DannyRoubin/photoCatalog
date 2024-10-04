@@ -1,5 +1,6 @@
 package com.dev.photoCatalog.controller;
 
+import java.util.UUID;
 import com.dev.photoCatalog.model.Photo;
 import com.dev.photoCatalog.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/photos")
+@RequestMapping("/photo")
 public class PhotoController {
 
     @Autowired

@@ -3,6 +3,8 @@ package com.dev.photoCatalog.service;
 import com.dev.photoCatalog.model.Location;
 import com.dev.photoCatalog.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;

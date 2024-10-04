@@ -8,40 +8,40 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/locations")
+@RequestMapping("/location")
 public class LocationController {
 
-   @Autowired
-   private LocationService locationService;
+    @Autowired
+    private LocationService locationService;
 
-   // Get all locations
-   @GetMapping
-   public List<Location> getAllLocations() {
-       return locationService.getAllLocations();
-   }
+    // Get all locations
+    @GetMapping
+    public List<Location> getAllLocations() {
+        return locationService.getAllLocations();
+    }
 
-   // Get a specific location by ID
-   @GetMapping("/{id}")
-   public Location getLocationById(@PathVariable int id) {
-       return locationService.getLocationById(id);
-   }
+    // Get a specific location by ID
+    @GetMapping("/{id}")
+    public Location getLocationById(@PathVariable int id) {
+        return locationService.getLocationById(id);
+    }
 
-   // Add a new location
-   @PostMapping
-   public Location addLocation(@RequestBody Location location) {
-       return locationService.addLocation(location);
-   }
+    // Add a new location
+    @PostMapping
+    public Location addLocation(@RequestBody Location location) {
+        return locationService.addLocation(location);
+    }
 
-   // Update an existing location
-   @PutMapping("/{id}")
-   public Location updateLocation(@PathVariable int id, @RequestBody Location location) {
-       return locationService.updateLocation(id, location);
-   }
+    // Update an existing location
+    @PutMapping("/{id}")
+    public Location updateLocation(@PathVariable int id, @RequestBody Location location) {
+        return locationService.updateLocation(id, location);
+    }
 
-   // Delete a location by ID
-   @DeleteMapping("/{id}")
-   public String deleteLocation(@PathVariable int id) {
-       locationService.deleteLocation(id);
-       return "Location deleted successfully.";
-   }
+    // Delete a location by ID
+    @DeleteMapping("/{id}")
+    public String deleteLocation(@PathVariable int id) {
+        locationService.deleteLocation(id);
+        return "Location deleted successfully.";
+    }
 }

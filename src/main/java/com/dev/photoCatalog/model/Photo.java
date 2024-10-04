@@ -2,6 +2,7 @@ package com.dev.photoCatalog.model;
 
 import jakarta.persistence.*;
 import java.util.UUID;
+import java.sql.Timestamp;
 
 @Entity
 public class Photo {
@@ -13,25 +14,24 @@ public class Photo {
     @Column(nullable = false, unique = true)
     private UUID photoGUID;  // UUID is manually generated, no need for @GeneratedValue
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 256)  // Specifying length to match database constraint
     private String fileName;
 
     @Column(nullable = false)
-    private java.sql.Timestamp timeStamp;
+    private Timestamp timeStamp;
 
-    // Default constructor
+    // constructors
     public Photo() {
         this.photoGUID = UUID.randomUUID();  // Manually generate UUID
     }
 
-    // Parameterized constructor
-    public Photo(String fileName, java.sql.Timestamp timeStamp) {
+    public Photo(String fileName, Timestamp timeStamp) {
         this.photoGUID = UUID.randomUUID();
         this.fileName = fileName;
         this.timeStamp = timeStamp;
     }
 
-    // Getters and Setters
+    // getters and setters
     public int getPhotoID() {
         return photoID;
     }
@@ -56,11 +56,11 @@ public class Photo {
         this.fileName = fileName;
     }
 
-    public java.sql.Timestamp getTimeStamp() {
+    public Timestamp getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(java.sql.Timestamp timeStamp) {
+    public void setTimeStamp(Timestamp timeStamp) {
         this.timeStamp = timeStamp;
     }
 }
