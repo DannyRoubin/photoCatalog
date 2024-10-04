@@ -45,4 +45,10 @@ public class PhotoController {
         photoService.deletePhoto(id);
         return "Photo deleted successfully.";
     }
+
+    // Get a specific photo by GUID
+    @GetMapping("/guid/{photoGUID}")
+    public Photo getPhotoByGUID(@PathVariable UUID photoGUID) {
+        return photoService.getPhotoByGUID(photoGUID);
+    }
 }

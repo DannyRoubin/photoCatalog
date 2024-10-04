@@ -3,6 +3,7 @@ package com.dev.photoCatalog.model;
 import jakarta.persistence.*;
 import java.util.UUID;
 import java.sql.Timestamp;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 public class Photo {
@@ -11,6 +12,7 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-generate photoID
     private int photoID;
 
+    @Schema(type = "string", format = "uuid", description = "Unique identifier for the photo, automatically generated", accessMode = Schema.AccessMode.READ_ONLY)
     @Column(nullable = false, unique = true)
     private UUID photoGUID;  // UUID is manually generated, no need for @GeneratedValue
 
