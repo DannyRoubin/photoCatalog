@@ -8,6 +8,10 @@ import com.dev.photoCatalog.repository.PhotoRepository;
 import com.dev.photoCatalog.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.jdbc.core.JdbcTemplate;
+import jakarta.transaction.Transactional;
+
+import java.util.UUID;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +27,9 @@ public class PhotoshootService {
 
     @Autowired
     private LocationRepository locationRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     // Get all photoshoots
     public List<Photoshoot> getAllPhotoshoots() {
@@ -59,8 +66,6 @@ public class PhotoshootService {
 
     // Get all photos for a specific photoshoot by querying the junction table and retrieving photos by photoGUID
     public List<Photo> getAllPhotosForPhotoshoot(int photoshootId) {
-        // Assuming we are using a query to fetch all photos associated with a photoshoot
-        // This should be done by joining the junction table and finding photos by their GUID
         return photoRepository.findAllPhotosForPhotoshoot(photoshootId); // Implement repository logic for this
     }
 
@@ -69,4 +74,19 @@ public class PhotoshootService {
         // Assuming we are using a query to fetch all locations associated with a photoshoot
         return locationRepository.findAllLocationsForPhotoshoot(photoshootId); // Implement repository logic for this
     }
+
+    @Transactional
+    public void addPhotoToPhotoshoot(int photoshootID, UUID photoGUID) {
+        // Fetch the photo and photoshoot entities first
+        Photoshoot photoshoot = photoshootRepository.findById(photoshootID)
+                .orElseThrow(() -> new IllegalArgumentException("Photoshoot not found"));
+
+        Photo photo = photoRepository.findByPhotoGUID(photoGUID.toString())
+                .orElseThrow(() -> new IllegalArgumentException("Photo not found"));
+
+        // Update the SQL query to use PhotoGUID instead of PhotoID
+        String sql = "INSERT INTO PhotoshootPhotoJunction (photoshootID, photoGUID) VALUES (?, ?)";
+        jdbcTemplate.update(sql, photoshoot.getPhotoshootID(), photo.getPhotoGUID());
+    }
+
 }

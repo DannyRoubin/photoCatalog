@@ -1,3 +1,4 @@
+// src/main/java/com/dev/photoCatalog/service/PhotoService.java
 package com.dev.photoCatalog.service;
 
 import com.dev.photoCatalog.model.Photo;
@@ -5,9 +6,9 @@ import com.dev.photoCatalog.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PhotoService {
@@ -28,6 +29,9 @@ public class PhotoService {
 
     // Add a new photo
     public Photo addPhoto(Photo photo) {
+        if (photo.getPhotoGUID() == null) {
+            photo.setPhotoGUID(UUID.randomUUID().toString());
+        }
         return photoRepository.save(photo);
     }
 
@@ -40,7 +44,7 @@ public class PhotoService {
             photo.setTimeStamp(updatedPhoto.getTimeStamp());
             return photoRepository.save(photo);
         }
-        return null;  
+        return null;
     }
 
     // Delete a photo by ID
@@ -48,7 +52,9 @@ public class PhotoService {
         photoRepository.deleteById(id);
     }
 
-    public Photo getPhotoByGUID(UUID photoGUID) {
-        return photoRepository.findByPhotoGUID(photoGUID);
+    public Photo getPhotoByGUID(String photoGUID) {
+        return photoRepository.findByPhotoGUID(photoGUID)
+                .orElseThrow(() -> new IllegalArgumentException("Photo not found"));
     }
+
 }

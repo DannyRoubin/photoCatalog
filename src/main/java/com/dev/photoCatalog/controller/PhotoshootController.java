@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/photoshoot") // Use singular for the entity
@@ -60,5 +62,11 @@ public class PhotoshootController {
     public ResponseEntity<List<Location>> getAllLocationsForPhotoshoot(@PathVariable int photoshootId) {
         List<Location> locations = photoshootService.getAllLocationsForPhotoshoot(photoshootId);
         return ResponseEntity.ok(locations);
+    }
+
+    @PostMapping("/{photoshootID}/addPhoto/{photoGUID}")
+    public ResponseEntity<String> addPhotoToPhotoshoot(@PathVariable int photoshootID, @PathVariable UUID photoGUID) {
+        photoshootService.addPhotoToPhotoshoot(photoshootID, photoGUID);
+        return ResponseEntity.ok("Photo added to Photoshoot successfully!");
     }
 }

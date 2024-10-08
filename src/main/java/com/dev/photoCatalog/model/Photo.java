@@ -1,7 +1,7 @@
+// src/main/java/com/dev/photoCatalog/model/Photo.java
 package com.dev.photoCatalog.model;
 
 import jakarta.persistence.*;
-import java.util.UUID;
 import java.sql.Timestamp;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -12,9 +12,9 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-generate photoID
     private int photoID;
 
-    @Schema(type = "string", format = "uuid", description = "Unique identifier for the photo, automatically generated", accessMode = Schema.AccessMode.READ_ONLY)
-    @Column(nullable = false, unique = true)
-    private UUID photoGUID;  // UUID is manually generated, no need for @GeneratedValue
+    @Schema(type = "string", format = "uuid", description = "Unique identifier for the photo", accessMode = Schema.AccessMode.READ_ONLY)
+    @Column(columnDefinition = "varchar(36)", nullable = false, unique = true)
+    private String photoGUID;
 
     @Column(nullable = false, length = 256)  // Specifying length to match database constraint
     private String fileName;
@@ -24,11 +24,10 @@ public class Photo {
 
     // constructors
     public Photo() {
-        this.photoGUID = UUID.randomUUID();  // Manually generate UUID
+        // Remove UUID generation from here
     }
 
     public Photo(String fileName, Timestamp timeStamp) {
-        this.photoGUID = UUID.randomUUID();
         this.fileName = fileName;
         this.timeStamp = timeStamp;
     }
@@ -42,11 +41,11 @@ public class Photo {
         this.photoID = photoID;
     }
 
-    public UUID getPhotoGUID() {
+    public String getPhotoGUID() {
         return photoGUID;
     }
 
-    public void setPhotoGUID(UUID photoGUID) {
+    public void setPhotoGUID(String photoGUID) {
         this.photoGUID = photoGUID;
     }
 

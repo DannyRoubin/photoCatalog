@@ -1,6 +1,5 @@
 package com.dev.photoCatalog.controller;
 
-import java.util.UUID;
 import com.dev.photoCatalog.model.Photo;
 import com.dev.photoCatalog.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,10 @@ public class PhotoController {
     // Add a new photo
     @PostMapping
     public Photo addPhoto(@RequestBody Photo photo) {
-        return photoService.addPhoto(photo);
+        System.out.println("Before saving: " + photo.getPhotoGUID());  // Log the GUID before saving
+        Photo savedPhoto = photoService.addPhoto(photo);
+        System.out.println("After saving: " + savedPhoto.getPhotoGUID());  // Log the GUID after saving
+        return savedPhoto;  // Return the saved photo (with the GUID)
     }
 
     // Update an existing photo
@@ -48,7 +50,7 @@ public class PhotoController {
 
     // Get a specific photo by GUID
     @GetMapping("/guid/{photoGUID}")
-    public Photo getPhotoByGUID(@PathVariable UUID photoGUID) {
+    public Photo getPhotoByGUID(@PathVariable String photoGUID) {
         return photoService.getPhotoByGUID(photoGUID);
     }
 }

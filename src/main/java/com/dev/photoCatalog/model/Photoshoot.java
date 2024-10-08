@@ -37,4 +37,6 @@ public class Photoshoot {
     public void setDate(Timestamp date) {
         this.date = date;
     }
+
+
 }
