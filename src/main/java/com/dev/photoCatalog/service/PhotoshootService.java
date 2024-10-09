@@ -48,11 +48,19 @@ public class PhotoshootService {
     }
 
     // Update an existing photoshoot
+    // src/main/java/com/dev/photoCatalog/service/PhotoshootService.java
+
     public Photoshoot updatePhotoshoot(int id, Photoshoot updatedPhotoshoot) {
         Optional<Photoshoot> existingPhotoshoot = photoshootRepository.findById(id);
         if (existingPhotoshoot.isPresent()) {
             Photoshoot photoshoot = existingPhotoshoot.get();
             photoshoot.setDate(updatedPhotoshoot.getDate());
+
+            // Fetch and set the new location
+            Location newLocation = locationRepository.findById(updatedPhotoshoot.getLocation().getLocationID())
+                    .orElseThrow(() -> new IllegalArgumentException("Location not found"));
+            photoshoot.setLocation(newLocation);
+
             return photoshootRepository.save(photoshoot);
         } else {
             return null;

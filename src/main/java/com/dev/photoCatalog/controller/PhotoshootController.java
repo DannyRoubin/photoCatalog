@@ -57,13 +57,6 @@ public class PhotoshootController {
         return ResponseEntity.ok(photos);
     }
 
-    //  Get all locations for a specific photoshoot
-    @GetMapping("/{photoshootId}/location")
-    public ResponseEntity<List<Location>> getAllLocationsForPhotoshoot(@PathVariable int photoshootId) {
-        List<Location> locations = photoshootService.getAllLocationsForPhotoshoot(photoshootId);
-        return ResponseEntity.ok(locations);
-    }
-
     @PostMapping("/{photoshootID}/addPhoto/{photoGUID}")
     public ResponseEntity<String> addPhotoToPhotoshoot(@PathVariable int photoshootID, @PathVariable UUID photoGUID) {
         photoshootService.addPhotoToPhotoshoot(photoshootID, photoGUID);

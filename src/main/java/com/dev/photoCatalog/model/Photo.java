@@ -13,7 +13,7 @@ public class Photo {
     private int photoID;
 
     @Schema(type = "string", format = "uuid", description = "Unique identifier for the photo", accessMode = Schema.AccessMode.READ_ONLY)
-    @Column(columnDefinition = "varchar(36)", nullable = false, unique = true)
+    @Column(columnDefinition = "org.hibernate.type.UUIDCharType", nullable = false, unique = true)
     private String photoGUID;
 
     @Column(nullable = false, length = 256)  // Specifying length to match database constraint

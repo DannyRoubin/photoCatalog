@@ -13,6 +13,10 @@ public class Photoshoot {
     @Column(nullable = false)
     private Timestamp date;
 
+    @ManyToOne
+    @JoinColumn(name = "locationID", nullable = false)
+    private Location location;
+
     // Default constructor
     public Photoshoot() {}
 
@@ -38,5 +42,12 @@ public class Photoshoot {
         this.date = date;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
 }
