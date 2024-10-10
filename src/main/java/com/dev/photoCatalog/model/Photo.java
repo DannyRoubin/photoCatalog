@@ -1,4 +1,3 @@
-// src/main/java/com/dev/photoCatalog/model/Photo.java
 package com.dev.photoCatalog.model;
 
 import jakarta.persistence.*;
