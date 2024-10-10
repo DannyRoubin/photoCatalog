@@ -15,7 +15,7 @@ public class Photoshoot {
 
     @ManyToOne
     @JoinColumn(name = "locationID", nullable = false)
-    private Location location;
+    private Location locationID;
 
     // Default constructor
     public Photoshoot() {}
@@ -43,11 +43,11 @@ public class Photoshoot {
     }
 
     public Location getLocation() {
-        return location;
+        return locationID;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocation(Location NewlocationID) {
+        this.locationID = NewlocationID;
     }
 
 }

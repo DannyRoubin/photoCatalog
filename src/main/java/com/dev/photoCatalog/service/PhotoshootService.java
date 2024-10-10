@@ -1,5 +1,6 @@
 package com.dev.photoCatalog.service;
 
+import com.dev.photoCatalog.dto.PhotoshootDTO;
 import com.dev.photoCatalog.model.Photoshoot;
 import com.dev.photoCatalog.model.Photo;
 import com.dev.photoCatalog.model.Location;
