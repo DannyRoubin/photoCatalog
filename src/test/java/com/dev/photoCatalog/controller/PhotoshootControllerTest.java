@@ -1,7 +1,7 @@
 package com.dev.photoCatalog.controller;
 
+import com.dev.photoCatalog.dto.PhotoshootDTO;
 import com.dev.photoCatalog.model.Photoshoot;
-import com.dev.photoCatalog.model.Location;
 import com.dev.photoCatalog.repository.PhotoshootRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,14 +10,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -45,34 +45,21 @@ public class PhotoshootControllerTest {
 
     @Test
     public void testCreateNewPhotoshoot() throws Exception {
-        Location location = new Location();
-        location.setLocationID(1);
-        location.setLocationName("Redmond");
-
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-
-        Photoshoot newPhotoshoot = new Photoshoot();
-        newPhotoshoot.setDate(timestamp);
-        newPhotoshoot.setLocation(location);
+        PhotoshootDTO newPhotoshootDTO = new PhotoshootDTO(null,
+                Timestamp.valueOf(LocalDateTime.now()), 1);
 
         mockMvc.perform(post("/photoshoot")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(newPhotoshoot)))
+                        .content(objectMapper.writeValueAsString(newPhotoshootDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.photoshootID").exists());
     }
 
     @Test
     public void testGetPhotoshootById() throws Exception {
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-
         Photoshoot photoshoot = new Photoshoot();
-        photoshoot.setDate(timestamp);
-        Location location = new Location();
-        location.setLocationID(1);
-        location.setLocationName("Redmond");
-        photoshoot.setLocation(location);
-
+        photoshoot.setDate(Timestamp.valueOf(LocalDateTime.now()));
+        photoshoot.setLocationID(1);  // Setting locationID directly
         photoshoot = photoshootRepository.save(photoshoot);
 
         mockMvc.perform(get("/photoshoot/" + photoshoot.getPhotoshootID()))
@@ -82,35 +69,30 @@ public class PhotoshootControllerTest {
 
     @Test
     public void testUpdatePhotoshoot() throws Exception {
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-
         Photoshoot photoshoot = new Photoshoot();
-        Location location = new Location();
-        location.setLocationID(1);
-        location.setLocationName("Redmond");
-        photoshoot.setDate(timestamp);
-        photoshoot.setLocation(location);
+        photoshoot.setDate(Timestamp.valueOf(LocalDateTime.now()));
+        photoshoot.setLocationID(1);  // Initial locationID
         photoshoot = photoshootRepository.save(photoshoot);
 
-        photoshoot.getLocation().setLocationID(2);
+        // Creating an updated PhotoshootDTO with new locationID
+        PhotoshootDTO updatedDTO = new PhotoshootDTO(
+                photoshoot.getPhotoshootID(),
+                Timestamp.valueOf(LocalDateTime.now()),
+                2  // New locationID
+        );
 
         mockMvc.perform(put("/photoshoot/" + photoshoot.getPhotoshootID())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(photoshoot)))
+                        .content(objectMapper.writeValueAsString(updatedDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.location.locationName").value("Seattle"));
+                .andExpect(jsonPath("$.locationID").value(2));
     }
 
     @Test
     public void testDeletePhotoshoot() throws Exception {
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-
         Photoshoot photoshoot = new Photoshoot();
-        Location location = new Location();
-        location.setLocationID(1);
-        location.setLocationName("Redmond");
-        photoshoot.setDate(timestamp);
-        photoshoot.setLocation(location);
+        photoshoot.setDate(Timestamp.valueOf(LocalDateTime.now()));
+        photoshoot.setLocationID(1);  // Setting locationID
         photoshoot = photoshootRepository.save(photoshoot);
 
         mockMvc.perform(delete("/photoshoot/" + photoshoot.getPhotoshootID()))
@@ -119,15 +101,9 @@ public class PhotoshootControllerTest {
 
     @Test
     public void testAddPhotoToPhotoshoot() throws Exception {
-        // Assuming you have a Photoshoot and a Photo ready in the repository.
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-
         Photoshoot photoshoot = new Photoshoot();
-        Location location = new Location();
-        location.setLocationID(1);
-        location.setLocationName("Redmond");
-        photoshoot.setDate(timestamp);
-        photoshoot.setLocation(location);
+        photoshoot.setDate(Timestamp.valueOf(LocalDateTime.now()));
+        photoshoot.setLocationID(1);  // Setting locationID
         photoshoot = photoshootRepository.save(photoshoot);
 
         String photoGUID = "D4E3504D-0B6D-4888-96E5-30C2CCE4E399";

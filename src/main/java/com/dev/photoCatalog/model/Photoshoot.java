@@ -13,16 +13,16 @@ public class Photoshoot {
     @Column(nullable = false)
     private Timestamp date;
 
-    @ManyToOne
-    @JoinColumn(name = "locationID", nullable = false)
-    private Location locationID;
+    @Column(name = "locationID", nullable = true)
+    private Integer locationID;  // Storing locationID as Integer
 
     // Default constructor
     public Photoshoot() {}
 
     // Parameterized constructor
-    public Photoshoot(Timestamp date) {
+    public Photoshoot(Timestamp date, Integer locationID) {
         this.date = date;
+        this.locationID = locationID;
     }
 
     // Getters and Setters
@@ -42,12 +42,11 @@ public class Photoshoot {
         this.date = date;
     }
 
-    public Location getLocation() {
+    public Integer getLocationID() {
         return locationID;
     }
 
-    public void setLocation(Location NewlocationID) {
-        this.locationID = NewlocationID;
+    public void setLocationID(Integer locationID) {
+        this.locationID = locationID;
     }
-
 }

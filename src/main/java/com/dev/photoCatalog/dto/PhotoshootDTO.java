@@ -4,25 +4,26 @@ import java.sql.Timestamp;
 
 public class PhotoshootDTO {
 
-    private int photoshootID;
+    private Integer photoshootID;
     private Timestamp date;
-    private int locationID;  // Reference to the location
+    private Integer locationID;
 
-    // Constructors
+    // Default constructor
     public PhotoshootDTO() {}
 
-    public PhotoshootDTO(int photoshootID, Timestamp date, int locationID) {
+    // Parameterized constructor
+    public PhotoshootDTO(Integer photoshootID, Timestamp date, Integer locationID) {
         this.photoshootID = photoshootID;
         this.date = date;
         this.locationID = locationID;
     }
 
     // Getters and Setters
-    public int getPhotoshootID() {
+    public Integer getPhotoshootID() {
         return photoshootID;
     }
 
-    public void setPhotoshootID(int photoshootID) {
+    public void setPhotoshootID(Integer photoshootID) {
         this.photoshootID = photoshootID;
     }
 
@@ -34,11 +35,11 @@ public class PhotoshootDTO {
         this.date = date;
     }
 
-    public int getLocationID() {
+    public Integer getLocationID() {
         return locationID;
     }
 
-    public void setLocationID(int locationID) {
+    public void setLocationID(Integer locationID) {
         this.locationID = locationID;
     }
 }
