@@ -10,11 +10,13 @@ import com.dev.photoCatalog.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Async;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -95,16 +97,19 @@ public class PhotoshootService {
     }
 
     // Add a photo to a photoshoot using photoGUID
+    @Async
     @Transactional
-    public void addPhotoToPhotoshoot(int photoshootID, UUID photoGUID) {
-        Photoshoot photoshoot = photoshootRepository.findById(photoshootID)
-                .orElseThrow(() -> new IllegalArgumentException("Photoshoot not found"));
+    public CompletableFuture<Void> addPhotoToPhotoshoot(int photoshootID, UUID photoGUID) {
+        return CompletableFuture.runAsync(() -> {
+            Photoshoot photoshoot = photoshootRepository.findById(photoshootID)
+                    .orElseThrow(() -> new IllegalArgumentException("Photoshoot not found"));
 
-        Photo photo = photoRepository.findByPhotoGUID(photoGUID.toString())
-                .orElseThrow(() -> new IllegalArgumentException("Photo not found"));
+            Photo photo = photoRepository.findByPhotoGUID(photoGUID.toString())
+                    .orElseThrow(() -> new IllegalArgumentException("Photo not found"));
 
-        String sql = "INSERT INTO PhotoshootPhotoJunction (photoshootID, photoGUID) VALUES (?, ?)";
-        jdbcTemplate.update(sql, photoshoot.getPhotoshootID(), photo.getPhotoGUID());
+            String sql = "INSERT INTO PhotoshootPhotoJunction (photoshootID, photoGUID) VALUES (?, ?)";
+            jdbcTemplate.update(sql, photoshoot.getPhotoshootID(), photo.getPhotoGUID());
+        });
     }
 
     // Check if a photoshoot exists by ID

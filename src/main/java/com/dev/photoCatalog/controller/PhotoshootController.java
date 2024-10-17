@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/photoshoot") // Keep the singular naming for the entity
@@ -64,8 +65,12 @@ public class PhotoshootController {
 
     // Add a photo to a photoshoot using photoGUID
     @PostMapping("/{photoshootID}/addPhoto/{photoGUID}")
-    public ResponseEntity<String> addPhotoToPhotoshoot(@PathVariable int photoshootID, @PathVariable UUID photoGUID) {
-        photoshootService.addPhotoToPhotoshoot(photoshootID, photoGUID);
-        return ResponseEntity.ok("Photo added to Photoshoot successfully!");
+    public CompletableFuture<ResponseEntity<String>> addPhotoToPhotoshoot(
+            @PathVariable int photoshootID, @PathVariable UUID photoGUID) {
+
+        return photoshootService.addPhotoToPhotoshoot(photoshootID, photoGUID)
+                .thenApply(result -> ResponseEntity.ok("Photo added to Photoshoot successfully"))
+                .exceptionally(ex -> ResponseEntity.status(500)
+                        .body("Failed to add photo: " + ex.getMessage()));
     }
 }

@@ -1,0 +1,9 @@
+services:
+  photo-catalog:
+    build: .
+    image: photo-catalog:latest
+    container_name: photo-catalog-app
+
+    ports:
+      - "8080:8080"
+    network_mode: bridge
