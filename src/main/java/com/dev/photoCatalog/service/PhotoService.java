@@ -1,4 +1,3 @@
-// src/main/java/com/dev/photoCatalog/service/PhotoService.java
 package com.dev.photoCatalog.service;
 
 import com.dev.photoCatalog.model.Photo;

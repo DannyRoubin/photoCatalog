@@ -34,6 +34,7 @@ dependencies {
     // Hibernate Validator and Jakarta Expression Language (EL) dependency
     implementation 'org.hibernate.validator:hibernate-validator:7.0.1.Final'
     implementation 'org.glassfish:jakarta.el:3.0.4'
+    //implementation 'org.projectlombok:lombok:1.18.22:provided'
     // For testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

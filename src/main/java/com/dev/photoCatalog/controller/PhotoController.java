@@ -1,5 +1,6 @@
 package com.dev.photoCatalog.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.dev.photoCatalog.model.Photo;
 import com.dev.photoCatalog.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000") // Allow requests from this origin
 @RequestMapping("/photo")
 public class PhotoController {
 
@@ -29,10 +31,7 @@ public class PhotoController {
     // Add a new photo
     @PostMapping
     public Photo addPhoto(@RequestBody Photo photo) {
-        System.out.println("Before saving: " + photo.getPhotoGUID());  // Log the GUID before saving
-        Photo savedPhoto = photoService.addPhoto(photo);
-        System.out.println("After saving: " + savedPhoto.getPhotoGUID());  // Log the GUID after saving
-        return savedPhoto;  // Return the saved photo (with the GUID)
+        return photoService.addPhoto(photo);
     }
 
     // Update an existing photo
