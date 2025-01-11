@@ -36,7 +36,7 @@ public class PhotoshootControllerTest {
 
     @BeforeEach
     public void setup() {
-        photoshootRepository.deleteAll();
+
     }
 
     @Test
@@ -109,15 +109,12 @@ public class PhotoshootControllerTest {
         photoshoot.setLocationID(1); // Set locationID directly
         photoshoot = photoshootRepository.save(photoshoot);
 
-        // Example Photo GUID to add
         String photoGUID = "D4E3504D-0B6D-4888-96E5-30C2CCE4E399";
 
-        // Perform the async POST request
         MvcResult mvcResult = mockMvc.perform(post("/photoshoot/" + photoshoot.getPhotoshootID() + "/addPhoto/" + photoGUID))
                 .andExpect(request().asyncStarted())  // Ensure async request is started
                 .andReturn();
 
-        // Use asyncDispatch to wait for the async processing to complete and validate response
         mockMvc.perform(asyncDispatch(mvcResult))
                 .andDo(print())  // Print response for debugging if needed
                 .andExpect(status().isOk())

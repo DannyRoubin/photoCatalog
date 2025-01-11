@@ -1,3 +1,71 @@
+/* General container styles */
+.page-container {
+  margin-top: 50px;
+  text-align: center;
+}
+
+/* Title styling */
+.page-title {
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* Form row styling */
+.form-row {
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.form-column {
+  text-align: left;
+}
+
+/* File input styling */
+.file-input {
+  display: block;
+  margin: 0 auto;
+  padding: 10px;
+  margin-bottom: 10px;
+  color: transparent; /* Hide the inline filename */
+}
+
+/* Styling for text below the file input */
+.file-info {
+  margin-top: 5px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Prevent browsers from overriding color with transparency */
+.file-input::-webkit-file-upload-button {
+  visibility: visible;
+}
+
+
+/* Button row styling */
+.button-row {
+  justify-content: center;
+}
+
+/* Submit button styling */
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+
+
 .App {
   text-align: center;
 }

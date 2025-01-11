@@ -16,10 +16,10 @@ public class Photo {
     private String photoGUID;
 
     @Column(nullable = false, length = 256)  // Specifying length to match database constraint
-    private String fileName;
-
-    @Column(nullable = false)
+    private String fileName;    @Column(nullable = false)
     private Timestamp timeStamp;
+
+
 
     // constructors
     public Photo() {
