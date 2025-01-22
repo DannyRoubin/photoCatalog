@@ -1,88 +1,92 @@
-import React, { useState } from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import './App.css';
-import { sendPostRequest } from './photoService';
-import ExifReader from 'exifreader';
+import React, { useState, useEffect } from "react";
+import { addPhotoshoot, getAllPhotoshoots } from "./photoshootService";
+import { useNavigate } from "react-router-dom";
+import "./App.css";
 
-function NewPage() {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [fileName, setFileName] = useState('');
-  const [imageDate, setImageDate] = useState('');
+function HomePage() {
+  const [photoshoots, setPhotoshoots] = useState([]);
+  const [newDate, setNewDate] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-    setFileName(file.name);
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
+  // Fetch all photoshoots on component mount
+  useEffect(() => {
+    async function fetchPhotoshoots() {
       try {
-        const imageDate = ExifReader.load(e.target.result);
-        if (imageDate.DateTimeOriginal) {
-          setImageDate(imageDate.DateTimeOriginal.description);
-        } else {
-          setImageDate(new Date().toISOString());
-        }
+        const data = await getAllPhotoshoots();
+        setPhotoshoots(data);
       } catch (error) {
-        console.error('Error reading image metadata:', error);
-        setImageDate(new Date().toISOString());
+        console.error("Error fetching photoshoots:", error);
       }
-    };
-    reader.readAsArrayBuffer(file);
-  };
+    }
+    fetchPhotoshoots();
+  }, []);
 
-  const handleSubmit = async () => {
-    if (!selectedFile) {
-      console.error('No file selected');
+  // Handle form submission to add a new photoshoot
+  const handleAddPhotoshoot = async (e) => {
+    e.preventDefault();
+    if (!newDate) {
+      alert("Please select a date!");
       return;
     }
-
+    setLoading(true);
     try {
-      await sendPostRequest(fileName, selectedFile, imageDate);
+      const newPhotoshoot = await addPhotoshoot(newDate);
+      setPhotoshoots((prev) => [...prev, newPhotoshoot]); // Dynamically add new photoshoot to the list
+      setNewDate(""); // Reset form
     } catch (error) {
-      console.error('Error sending request:', error);
+      console.error("Error adding photoshoot:", error);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  // Navigate to the Photoshoot page
+  const handlePhotoshootClick = (photoshootID) => {
+    navigate(`/photoshoot/${photoshootID}`);
   };
 
   return (
-    <Container className="page-container">
-      <h1 className="page-title">Upload and Process Image</h1>
-      <Row className="form-row">
-        <Col xs={12} md={6} className="form-column">
-          <input
-            type="file"
-            accept="image/*"
-            className="file-input"
-            onChange={handleFileChange}
-          />
-          {fileName && (
-            <div className="file-info">
-              <strong>Selected File:</strong> {fileName}
-            </div>
-          )}
-          {imageDate && (
-            <div className="file-info">
-              <strong>Image Date:</strong> {imageDate}
-            </div>
-          )}
-        </Col>
-      </Row>
-      <Row className="button-row">
-        <Col xs="auto">
-          <Button
-            className="submit-button"
-            onClick={handleSubmit}
-            disabled={!selectedFile}
-          >
-            Submit
-          </Button>
-        </Col>
-      </Row>
-    </Container>
+    <div className="homepage-container">
+      <h1>Photoshoots</h1>
+
+      {/* Section to add new photoshoots */}
+      <form onSubmit={handleAddPhotoshoot} className="new-photoshoot-form">
+        <h2>Create New Photoshoot</h2>
+        <label htmlFor="photoshoot-date">Date:</label>
+        <input
+          type="datetime-local"
+          id="photoshoot-date"
+          value={newDate}
+          onChange={(e) => setNewDate(e.target.value)}
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? "Adding..." : "Submit"}
+        </button>
+      </form>
+
+      {/* Section to display existing photoshoots */}
+      <div className="existing-photoshoots">
+        <h2>Existing Photoshoots</h2>
+        {photoshoots.length === 0 ? (
+          <p>No photoshoots available.</p>
+        ) : (
+          <ul>
+            {photoshoots.map((photoshoot) => (
+              <li key={photoshoot.photoshootID}>
+                <button
+                  className="photoshoot-button"
+                  onClick={() => handlePhotoshootClick(photoshoot.photoshootID)}
+                >
+                  Photoshoot #{photoshoot.photoshootID}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
   );
 }
 
-export default NewPage;
+export default HomePage;

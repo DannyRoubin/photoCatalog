@@ -13,6 +13,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001", "http://localhost:4200"})
 @RequestMapping("/photoshoot") // Keep the singular naming for the entity
 public class PhotoshootController {
 
