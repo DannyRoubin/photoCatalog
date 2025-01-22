@@ -16,7 +16,7 @@ export async function getPhotoById(id) {
 
 export async function sendPostRequest(fileName, selectedImage, imageDate) {
   try {
-    // Step 1: Send request to the backend
+    // Send request to the backend
     const backendResponse = await axios.post("http://localhost:8080/photo", {
       fileName: fileName,
       timeStamp: imageDate,
@@ -28,15 +28,15 @@ export async function sendPostRequest(fileName, selectedImage, imageDate) {
       // Extract photoID and photoGUID from the backend response
       const { photoID, photoGUID } = backendResponse.data;
 
-      // Step 2: Send request to the function app
-      const formData = new FormData();
-      formData.append("photoID", photoID);
-      formData.append("photoGUID", photoGUID);
-      formData.append("file", selectedImage);
+      // Send request to the function app
+      const ImageData = new FormData();
+      ImageData.append("photoID", photoID);
+      ImageData.append("photoGUID", photoGUID);
+      ImageData.append("file", selectedImage);
 
       const functionAppResponse = await axios.post(
         "http://localhost:8081/api/process-image",
-        formData,
+        ImageData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -51,43 +51,5 @@ export async function sendPostRequest(fileName, selectedImage, imageDate) {
   }
 }
 
-
-
-//using this one for testing
-// export async function sendPostRequest() {
-//   const photoID = 8;
-//   const photoGUID = "0ED788CF-3309-604D-ABA7-0394FCFFF553";
-
-//   try {
-//     // Fetch the image file from the public directory
-//     const response = await fetch('/sample.jpg');
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-
-//     const imageBlob = await response.blob();
-
-//     // Debugging: Log the first 10 bytes of the image as a Uint8Array
-//     const imageBuffer = await imageBlob.arrayBuffer();
-//     console.log('Image Byte Array (First 10 Bytes):', new Uint8Array(imageBuffer).slice(0, 10));
-
-//     // Prepare the FormData object
-//     const formData = new FormData();
-//     formData.append("photoID", photoID);
-//     formData.append("photoGUID", photoGUID);
-//     formData.append("file", new File([imageBlob], "sample.jpg", { type: "image/jpeg" }));
-
-//     // Send the POST request
-//     const result = await axios.post("http://localhost:8081/api/process-image", formData, {
-//       headers: {
-//         'Content-Type': 'multipart/form-data',
-//       },
-//     });
-
-//     console.log('Post request successful:', result.data);
-//   } catch (error) {
-//     console.error('Error in post request:', error);
-//   }
-// }
 
 
