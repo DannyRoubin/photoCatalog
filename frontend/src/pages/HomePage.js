@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { addPhotoshoot, getAllPhotoshoots } from "./photoshootService";
+import { addPhotoshoot, getAllPhotoshoots } from "../services/photoshootService";
 import { useNavigate } from "react-router-dom";
-import "./App.css";
+import '../styles/App.css';
 
 function HomePage() {
   const [photoshoots, setPhotoshoots] = useState([]);

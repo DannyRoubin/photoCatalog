@@ -4,9 +4,9 @@ import {
   getAllPhotosForPhotoshoot,
   getPhotoshootById,
   addPhotoToPhotoshoot,
-} from "./photoshootService";
-import { sendPostRequest } from "./photoService";
-import "./App.css";
+} from "../services/photoshootService";
+import { sendPostRequest } from "../services/photoService";
+import '../styles/App.css';
 
 function PhotoshootPage() {
   const { photoshootID } = useParams();
