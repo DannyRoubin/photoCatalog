@@ -1,40 +1,33 @@
 import axios from 'axios';
 
-/**
- * Fetch all photoshoots.
- */
+//get all photoshoots.
 export async function getAllPhotoshoots() {
   try {
     const response = await axios.get("http://localhost:8080/photoshoot");
     if (response.status !== 200) {
-      throw new Error(`Network response was not ok: ${response.status} - ${response.statusText}`);
+      console.log(`${response.status} - ${response.statusText}`);
     }
+    //console.log("hit check");
     return response.data;
   } catch (error) {
-    console.error("Error fetching photoshoots:", error);
-    throw new Error(`Error fetching photoshoots: ${error.message}`);
+    console.log("Error fetching photoshoots:", error);
   }
 }
 
-/**
- * Fetch a specific photoshoot by ID.
- */
+//get a specific photoshoot by ID.
 export async function getPhotoshootById(id) {
   try {
     const response = await axios.get(`http://localhost:8080/photoshoot/${id}`);
     if (response.status !== 200) {
-      throw new Error(`Network response was not ok: ${response.status} - ${response.statusText}`);
+      console.log(`${response.status} - ${response.statusText}`);
     }
     return response.data;
   } catch (error) {
-    console.error("Error fetching photoshoot:", error);
-    throw new Error(`Error fetching photoshoot: ${error.message}`);
+    console.log("Error fetching photoshoot:", error);
   }
 }
 
-/**
- * Create a new photoshoot.
- */
+//make a new photoshoot.
 export async function addPhotoshoot(date) {
     try {
       const response = await axios.post("http://localhost:8080/photoshoot", {
@@ -43,44 +36,36 @@ export async function addPhotoshoot(date) {
         date: date,
       });
       if (response.status !== 200) {
-        throw new Error(`Network response was not ok: ${response.status} - ${response.statusText}`);
+        console.log(`${response.status} - ${response.statusText}`);
       }
       return response.data;
     } catch (error) {
-      console.error("Error creating photoshoot:", error);
-      throw new Error(`Error creating photoshoot: ${error.message}`);
+      console.log("Error creating photoshoot:", error);
     }
   }
   
 
-/**
- * Add a photo to a photoshoot by photoGUID.
- */
+ //add a photo to a photoshoot using the photoGUID.
 export async function addPhotoToPhotoshoot(photoshootID, photoGUID) {
   try {
     const response = await axios.post(`http://localhost:8080/photoshoot/${photoshootID}/addPhoto/${photoGUID}`);
     if (response.status !== 200) {
-      throw new Error(`Network response was not ok: ${response.status} - ${response.statusText}`);
+      console.log(`${response.status} - ${response.statusText}`);
     }
-    console.log("Photo added to photoshoot:", response.data);
   } catch (error) {
-    console.error("Error adding photo to photoshoot:", error);
-    throw new Error(`Error adding photo to photoshoot: ${error.message}`);
+    console.log("Error adding photo to photoshoot:", error);
   }
 }
 
-/**
- * Fetch all photos for a specific photoshoot.
- */
+ //get all photos for a specific photoshoot.
 export async function getAllPhotosForPhotoshoot(photoshootID) {
   try {
     const response = await axios.get(`http://localhost:8080/photoshoot/${photoshootID}/photo`);
     if (response.status !== 200) {
-      throw new Error(`Network response was not ok: ${response.status} - ${response.statusText}`);
+      console.log(`${response.status} - ${response.statusText}`);
     }
     return response.data;
   } catch (error) {
-    console.error("Error fetching photos for photoshoot:", error);
-    throw new Error(`Error fetching photos for photoshoot: ${error.message}`);
+    console.log("Error grabbing photos for photoshoot:", error);
   }
 }

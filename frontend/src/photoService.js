@@ -25,7 +25,7 @@ export async function sendPostRequest(fileName, selectedImage, imageDate) {
     if (backendResponse.status === 200) {
       console.log("Backend response:", backendResponse.data);
 
-      // Extract photoID and photoGUID from the backend response
+      // get the photoID and photoGUID from the backend response
       const { photoID, photoGUID } = backendResponse.data;
 
       // Send request to the function app
@@ -45,9 +45,13 @@ export async function sendPostRequest(fileName, selectedImage, imageDate) {
       );
 
       console.log("Function app response:", functionAppResponse.data);
+
+      return { photoID, photoGUID };
+    } else {
+      throw new Error(`Unexpected backend response status: ${backendResponse.status}`);
     }
   } catch (error) {
-    console.error("Error in sendPostRequest:", error);
+    console.log("Error in sendPostRequest:", error);
   }
 }
 

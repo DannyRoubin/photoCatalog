@@ -9,18 +9,18 @@ function HomePage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch all photoshoots on component mount
-  useEffect(() => {
-    async function fetchPhotoshoots() {
-      try {
-        const data = await getAllPhotoshoots();
-        setPhotoshoots(data);
-      } catch (error) {
-        console.error("Error fetching photoshoots:", error);
-      }
+  // Grabs all photoshoots whenever state changes
+  useEffect(() => {fetchPhotoshoots();}, []);
+
+  //function to grab all photoshoots and set them on rerenders
+  async function fetchPhotoshoots() {
+    try {
+      const data = await getAllPhotoshoots();
+      setPhotoshoots(data);
+    } catch (error) {
+      console.log("Error grabbing photoshoots:", error);
     }
-    fetchPhotoshoots();
-  }, []);
+  }
 
   // Handle form submission to add a new photoshoot
   const handleAddPhotoshoot = async (e) => {
@@ -32,10 +32,10 @@ function HomePage() {
     setLoading(true);
     try {
       const newPhotoshoot = await addPhotoshoot(newDate);
-      setPhotoshoots((prev) => [...prev, newPhotoshoot]); // Dynamically add new photoshoot to the list
-      setNewDate(""); // Reset form
+      fetchPhotoshoots(); 
+      setNewDate(""); 
     } catch (error) {
-      console.error("Error adding photoshoot:", error);
+      console.log("Error adding photoshoot:", error);
     } finally {
       setLoading(false);
     }
