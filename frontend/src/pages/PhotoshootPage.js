@@ -6,6 +6,8 @@ import {
   addPhotoToPhotoshoot,
 } from "../services/photoshootService";
 import { sendPostRequest } from "../services/photoService";
+import Photo from "../models/Photo";
+import Photoshoot from "../models/Photoshoot";
 import '../styles/App.css';
 
 function PhotoshootPage() {
@@ -25,7 +27,7 @@ function PhotoshootPage() {
     try {
       // get date from the photoshoot itself
       const photoshoot = await getPhotoshootById(photoshootID);
-      setPhotoshootDate(photoshoot.date);
+      setPhotoshootDate(photoshoot.getDate());
 
       // grab all the photos from the photoshoot
       const photos = await getAllPhotosForPhotoshoot(photoshootID);
@@ -53,15 +55,18 @@ function PhotoshootPage() {
 
     setLoading(true);
     try {
-      // Process image through the function app and get the photoGUID
-      const { photoGUID } = await sendPostRequest(
+      // Process image through the function app and get the photo object
+      const photoData = await sendPostRequest(
         selectedImage.name,
         selectedImage,
         imageDate
       );
 
+      // Create a new Photo object
+      const photo = new Photo(photoData.photoID, photoData.photoGUID, photoData.fileName, photoData.timeStamp);
+
       // Add photo to the photoshoot using the correct photoGUID
-      await addPhotoToPhotoshoot(photoshootID, photoGUID);
+      await addPhotoToPhotoshoot(photoshootID, photo.getPhotoGUID());
 
       // Refresh the photo list
       const updatedPhotos = await getAllPhotosForPhotoshoot(photoshootID);
@@ -101,8 +106,8 @@ function PhotoshootPage() {
           <p>No images found for this photoshoot.</p>
         ) : (
           photos.map((photo) => (
-            <div key={photo.photoGUID} className="photo-item">
-              <p>File Name: {photo.fileName}</p>
+            <div key={photo.getPhotoGUID()} className="photo-item">
+              <p>File Name: {photo.getFileName()}</p>
             </div>
           ))
         )}

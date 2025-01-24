@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Photo from '../models/Photo';
 
 export async function getPhotoById(id) {
   try {
@@ -6,29 +7,23 @@ export async function getPhotoById(id) {
     if (res.status !== 200) {
       throw new Error(`Network response was not ok: ${res.status} - ${res.statusText}`);
     }
-    return res.data;
+    const { photoID, photoGUID, fileName, timeStamp } = res.data;
+    return new Photo(photoID, photoGUID, fileName, timeStamp);
   } catch (error) {
     console.error('Error fetching photo:', error);
     throw new Error(`Error fetching photo: ${error.message}`);
   }
 }
 
-
 export async function sendPostRequest(fileName, selectedImage, imageDate) {
   try {
-    // Send request to the backend
     const backendResponse = await axios.post("http://localhost:8080/photo", {
       fileName: fileName,
       timeStamp: imageDate,
     });
 
     if (backendResponse.status === 200) {
-      console.log("Backend response:", backendResponse.data);
-
-      // get the photoID and photoGUID from the backend response
       const { photoID, photoGUID } = backendResponse.data;
-
-      // Send request to the function app
       const ImageData = new FormData();
       ImageData.append("photoID", photoID);
       ImageData.append("photoGUID", photoGUID);
@@ -46,7 +41,7 @@ export async function sendPostRequest(fileName, selectedImage, imageDate) {
 
       console.log("Function app response:", functionAppResponse.data);
 
-      return { photoID, photoGUID };
+      return new Photo(photoID, photoGUID, fileName, imageDate);
     } else {
       throw new Error(`Unexpected backend response status: ${backendResponse.status}`);
     }
@@ -54,6 +49,3 @@ export async function sendPostRequest(fileName, selectedImage, imageDate) {
     console.log("Error in sendPostRequest:", error);
   }
 }
-
-
-

@@ -1,51 +1,53 @@
 import axios from 'axios';
+import Photoshoot from '../models/Photoshoot';
+import Photo from '../models/Photo';
 
-//get all photoshoots.
+// Get all photoshoots
 export async function getAllPhotoshoots() {
   try {
     const response = await axios.get("http://localhost:8080/photoshoot");
     if (response.status !== 200) {
       console.log(`${response.status} - ${response.statusText}`);
     }
-    //console.log("hit check");
-    return response.data;
+    return response.data.map(photoshoot => new Photoshoot(photoshoot.photoshootID, photoshoot.date));
   } catch (error) {
     console.log("Error fetching photoshoots:", error);
   }
 }
 
-//get a specific photoshoot by ID.
+// Get a specific photoshoot by ID
 export async function getPhotoshootById(id) {
   try {
     const response = await axios.get(`http://localhost:8080/photoshoot/${id}`);
     if (response.status !== 200) {
       console.log(`${response.status} - ${response.statusText}`);
     }
-    return response.data;
+    const { photoshootID, date } = response.data;
+    return new Photoshoot(photoshootID, date);
   } catch (error) {
     console.log("Error fetching photoshoot:", error);
   }
 }
 
-//make a new photoshoot.
+// Make a new photoshoot
 export async function addPhotoshoot(date) {
-    try {
-      const response = await axios.post("http://localhost:8080/photoshoot", {
-        //keeping a placeholder locationID for now. Will come back and allow users to select location later on
-        locationID: 1, 
-        date: date,
-      });
-      if (response.status !== 200) {
-        console.log(`${response.status} - ${response.statusText}`);
-      }
-      return response.data;
-    } catch (error) {
-      console.log("Error creating photoshoot:", error);
+  try {
+    const response = await axios.post("http://localhost:8080/photoshoot", {
+      // Keeping a placeholder locationID for now. Will come back and allow users to select location later on
+      locationID: 1, 
+      date: date,
+    });
+    if (response.status !== 200) {
+      console.log(`${response.status} - ${response.statusText}`);
     }
+    const { photoshootID } = response.data;
+    return new Photoshoot(photoshootID, date);
+  } catch (error) {
+    console.log("Error creating photoshoot:", error);
   }
-  
+}
 
- //add a photo to a photoshoot using the photoGUID.
+// Add a photo to a photoshoot using the photoGUID
 export async function addPhotoToPhotoshoot(photoshootID, photoGUID) {
   try {
     const response = await axios.post(`http://localhost:8080/photoshoot/${photoshootID}/addPhoto/${photoGUID}`);
@@ -58,13 +60,13 @@ export async function addPhotoToPhotoshoot(photoshootID, photoGUID) {
 }
 
  //get all photos for a specific photoshoot.
-export async function getAllPhotosForPhotoshoot(photoshootID) {
+ export async function getAllPhotosForPhotoshoot(photoshootID) {
   try {
     const response = await axios.get(`http://localhost:8080/photoshoot/${photoshootID}/photo`);
     if (response.status !== 200) {
       console.log(`${response.status} - ${response.statusText}`);
     }
-    return response.data;
+    return response.data.map(photo => new Photo(photo.photoID, photo.photoGUID, photo.fileName, photo.timeStamp));
   } catch (error) {
     console.log("Error grabbing photos for photoshoot:", error);
   }
