@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { addPhotoshoot, getAllPhotoshoots } from "../services/photoshootService";
-import { useNavigate } from "react-router-dom";
+import { getAllPhotoshoots, addPhotoshoot } from "../services/photoshootService";
+import PhotoshootList from "../components/PhotoshootList";
+import NewPhotoshootForm from "../components/NewPhotoshootForm";
 import '../styles/App.css';
 
 function HomePage() {
   const [photoshoots, setPhotoshoots] = useState([]);
-  const [newDate, setNewDate] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
-  // Grabs all photoshoots whenever state changes
-  useEffect(() => {fetchPhotoshoots();}, []);
+  useEffect(() => {
+    fetchPhotoshoots();
+  }, []);
 
-  //function to grab all photoshoots and set them on rerenders
   async function fetchPhotoshoots() {
     try {
       const data = await getAllPhotoshoots();
@@ -22,69 +20,20 @@ function HomePage() {
     }
   }
 
-  // Handle form submission to add a new photoshoot
-  const handleAddPhotoshoot = async (e) => {
-    e.preventDefault();
-    if (!newDate) {
-      alert("Please select a date!");
-      return;
-    }
-    setLoading(true);
+  const handleAddPhotoshoot = async (date) => {
     try {
-      const newPhotoshoot = await addPhotoshoot(newDate);
-      fetchPhotoshoots(); 
-      setNewDate(""); 
+      await addPhotoshoot(date);
+      fetchPhotoshoots();
     } catch (error) {
       console.log("Error adding photoshoot:", error);
-    } finally {
-      setLoading(false);
     }
-  };
-
-  // Navigate to the Photoshoot page
-  const handlePhotoshootClick = (photoshootID) => {
-    navigate(`/photoshoot/${photoshootID}`);
   };
 
   return (
     <div className="homepage-container">
       <h1>Photoshoots</h1>
-
-      {/* Section to add new photoshoots */}
-      <form onSubmit={handleAddPhotoshoot} className="new-photoshoot-form">
-        <h2>Create New Photoshoot</h2>
-        <label htmlFor="photoshoot-date">Date:</label>
-        <input
-          type="datetime-local"
-          id="photoshoot-date"
-          value={newDate}
-          onChange={(e) => setNewDate(e.target.value)}
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? "Adding..." : "Submit"}
-        </button>
-      </form>
-
-      {/* Section to display existing photoshoots */}
-      <div className="existing-photoshoots">
-        <h2>Existing Photoshoots</h2>
-        {photoshoots.length === 0 ? (
-          <p>No photoshoots available.</p>
-        ) : (
-          <ul>
-            {photoshoots.map((photoshoot) => (
-              <li key={photoshoot.photoshootID}>
-                <button
-                  className="photoshoot-button"
-                  onClick={() => handlePhotoshootClick(photoshoot.photoshootID)}
-                >
-                  Photoshoot #{photoshoot.photoshootID}
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <NewPhotoshootForm onAddPhotoshoot={handleAddPhotoshoot} />
+      <PhotoshootList photoshoots={photoshoots} />
     </div>
   );
 }
