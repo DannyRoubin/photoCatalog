@@ -1,26 +1,10 @@
 class Photoshoot {
-    constructor(photoshootID, date) {
+    constructor(photoshootID, date, locationID) {
       this.photoshootID = photoshootID; 
-      this.date = date; 
-    }
-  
-    // Getters
-    getPhotoshootID() {
-      return this.photoshootID;
-    }
-  
-    getDate() {
-      return this.date;
-    }
-  
-    // Setters
-    setPhotoshootID(photoshootID) {
-      this.photoshootID = photoshootID;
-    }
-  
-    setDate(date) {
       this.date = date;
+      this.locationID = locationID; 
     }
+  
   }
   
   export default Photoshoot;

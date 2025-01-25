@@ -5,6 +5,7 @@ import {
   getPhotoshootById,
   addPhotoToPhotoshoot,
 } from "../services/photoshootService";
+import { getLocationById } from "../services/LocationService"; // Import the location service
 import { sendPostRequest } from "../services/photoService";
 import PhotoList from "../components/PhotoList";
 import ImageUploadForm from "../components/ImageUploadForm";
@@ -16,6 +17,7 @@ function PhotoshootPage() {
 
   const [photos, setPhotos] = useState([]);
   const [photoshootDate, setPhotoshootDate] = useState("");
+  const [locationName, setLocationName] = useState(""); // New state variable for location name
 
   useEffect(() => {
     fetchPhotoshootDetails();
@@ -24,7 +26,10 @@ function PhotoshootPage() {
   async function fetchPhotoshootDetails() {
     try {
       const photoshoot = await getPhotoshootById(photoshootID);
-      setPhotoshootDate(photoshoot.getDate());
+      setPhotoshootDate(photoshoot.date);
+
+      const location = await getLocationById(photoshoot.locationID); // Fetch the location details
+      setLocationName(location.name); // Set the location name
 
       const photos = await getAllPhotosForPhotoshoot(photoshootID);
       setPhotos(photos);
@@ -55,6 +60,7 @@ function PhotoshootPage() {
     <div className="photoshoot-page-container">
       <h1>Photoshoot #{photoshootID}</h1>
       <p>Date: {photoshootDate}</p>
+      <p>Location: {locationName}</p> {/* Display the location name */}
       <button onClick={() => navigate("/")}>Back to Home</button>
       <ImageUploadForm onUpload={handleUpload} />
       <PhotoList photos={photos} />

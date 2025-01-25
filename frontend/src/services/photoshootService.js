@@ -9,7 +9,7 @@ export async function getAllPhotoshoots() {
     if (response.status !== 200) {
       console.log(`${response.status} - ${response.statusText}`);
     }
-    return response.data.map(photoshoot => new Photoshoot(photoshoot.photoshootID, photoshoot.date));
+    return response.data.map(photoshoot => new Photoshoot(photoshoot.photoshootID, photoshoot.date, photoshoot.locationID));
   } catch (error) {
     console.log("Error fetching photoshoots:", error);
   }
@@ -22,26 +22,25 @@ export async function getPhotoshootById(id) {
     if (response.status !== 200) {
       console.log(`${response.status} - ${response.statusText}`);
     }
-    const { photoshootID, date } = response.data;
-    return new Photoshoot(photoshootID, date);
+    const { photoshootID, date, locationID } = response.data;
+    return new Photoshoot(photoshootID, date, locationID);
   } catch (error) {
     console.log("Error fetching photoshoot:", error);
   }
 }
 
-// Make a new photoshoot
-export async function addPhotoshoot(date) {
+// Make a new photoshoot with a location
+export async function addPhotoshoot(date, locationID) {
   try {
     const response = await axios.post("http://localhost:8080/photoshoot", {
-      // Keeping a placeholder locationID for now. Will come back and allow users to select location later on
-      locationID: 1, 
+      locationID: locationID, 
       date: date,
     });
     if (response.status !== 200) {
       console.log(`${response.status} - ${response.statusText}`);
     }
     const { photoshootID } = response.data;
-    return new Photoshoot(photoshootID, date);
+    return new Photoshoot(photoshootID, date, locationID);
   } catch (error) {
     console.log("Error creating photoshoot:", error);
   }
@@ -59,8 +58,8 @@ export async function addPhotoToPhotoshoot(photoshootID, photoGUID) {
   }
 }
 
- //get all photos for a specific photoshoot.
- export async function getAllPhotosForPhotoshoot(photoshootID) {
+// Get all photos for a specific photoshoot
+export async function getAllPhotosForPhotoshoot(photoshootID) {
   try {
     const response = await axios.get(`http://localhost:8080/photoshoot/${photoshootID}/photo`);
     if (response.status !== 200) {

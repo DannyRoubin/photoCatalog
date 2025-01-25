@@ -12,8 +12,8 @@ const PhotoList = ({ photos }) => {
         <p>No images found for this photoshoot.</p>
       ) : (
         photos.map((photo) => (
-          <div key={photo.getPhotoGUID()} className="photo-item">
-            <p>File Name: {photo.getFileName()}</p>
+          <div key={photo.photoGUID} className="photo-item">
+            <p>File Name: {photo.fileName}</p>
           </div>
         ))
       )}
