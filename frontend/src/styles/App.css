@@ -185,3 +185,30 @@
   border-radius: 8px; 
 }
 
+.add-photoshoot-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-photoshoot-button:hover {
+  background-color: #0056b3;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#photoshoot-date,
+#photoshoot-location,
+button[type="submit"] {
+  height: 36px;
+}

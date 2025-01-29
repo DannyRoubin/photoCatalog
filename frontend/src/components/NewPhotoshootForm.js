@@ -52,27 +52,33 @@ const NewPhotoshootForm = ({ onAddPhotoshoot, locations, onAddLocation }) => {
   return (
     <form onSubmit={handleAddPhotoshoot} className="new-photoshoot-form">
       <h2>Create New Photoshoot</h2>
-      <label htmlFor="photoshoot-date">Date:</label>
-      <input
-        type="datetime-local"
-        id="photoshoot-date"
-        value={newDate}
-        onChange={(e) => setNewDate(e.target.value)}
-      />
+      <div className="form-row">
+        <label htmlFor="photoshoot-date">Date:</label>
+        <input
+          type="datetime-local"
+          id="photoshoot-date"
+          value={newDate}
+          onChange={(e) => setNewDate(e.target.value)}
+        />
 
-      <label htmlFor="photoshoot-location">Location:</label>
-      <select
-        id="photoshoot-location"
-        value={selectedLocationID}
-        onChange={(e) => setSelectedLocationID(e.target.value)}
-      >
-        <option value=""> Select a location </option>
-        {locations.map((location) => (
-          <option key={location.locationID} value={location.locationID}>
-            {location.name}
-          </option>
-        ))}
-      </select>
+        <label htmlFor="photoshoot-location">Location:</label>
+        <select
+          id="photoshoot-location"
+          value={selectedLocationID}
+          onChange={(e) => setSelectedLocationID(e.target.value)}
+        >
+          <option value="">Select a location</option>
+          {locations.map((location) => (
+            <option key={location.locationID} value={location.locationID}>
+              {location.name}
+            </option>
+          ))}
+        </select>
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Adding..." : "Submit"}
+        </button>
+      </div>
 
       <div className="add-new-location">
         <h3>Add a New Location</h3>
@@ -86,10 +92,6 @@ const NewPhotoshootForm = ({ onAddPhotoshoot, locations, onAddLocation }) => {
           {loading ? "Adding..." : "Add Location"}
         </button>
       </div>
-
-      <button type="submit" disabled={loading}>
-        {loading ? "Adding..." : "Submit"}
-      </button>
     </form>
   );
 };
