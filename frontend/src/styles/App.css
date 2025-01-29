@@ -161,3 +161,12 @@
 .photoshoot-button:hover {
   background-color: #e0e0e0;
 }
+
+.photoshoot-card {
+  transition: all 0.3s ease-in-out;
+}
+
+.photoshoot-card:hover {
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.02);
+}

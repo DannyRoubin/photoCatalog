@@ -58,7 +58,7 @@ function HomePage() {
         locations={locations} 
         onAddLocation={handleAddLocation} 
       />
-      <PhotoshootList photoshoots={photoshoots} />
+      <PhotoshootList photoshoots={photoshoots} locations={locations}/>
     </div>
   );
 }
