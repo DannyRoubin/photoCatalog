@@ -6,7 +6,7 @@ import {
   addPhotoToPhotoshoot,
 } from "../services/photoshootService";
 import { getLocationById } from "../services/LocationService"; 
-import { sendPostRequest } from "../services/photoService";
+import { sendPostRequest, getImageByGUID } from "../services/photoService"; 
 import PhotoList from "../components/PhotoList";
 import ImageUploadForm from "../components/ImageUploadForm";
 import '../styles/App.css';
@@ -47,7 +47,7 @@ function PhotoshootPage() {
         imageDate
       );
 
-      await addPhotoToPhotoshoot(photoshootID, photoData.getPhotoGUID());
+      await addPhotoToPhotoshoot(photoshootID, photoData.photoGUID);
 
       const updatedPhotos = await getAllPhotosForPhotoshoot(photoshootID);
       setPhotos(updatedPhotos);
@@ -63,7 +63,7 @@ function PhotoshootPage() {
       <p>Location: {locationName}</p>
       <button onClick={() => navigate("/")}>Back to Home</button>
       <ImageUploadForm onUpload={handleUpload} />
-      <PhotoList photos={photos} />
+      <PhotoList photos={photos} fetchImage={getImageByGUID} /> 
     </div>
   );
 }

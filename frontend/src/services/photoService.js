@@ -49,3 +49,16 @@ export async function sendPostRequest(fileName, selectedImage, imageDate) {
     console.log("Error in sendPostRequest:", error);
   }
 }
+
+export async function getImageByGUID(photoGUID) {
+  try {
+    const response = await axios.get(`http://localhost:8081/api/image/${photoGUID.toLowerCase()}`, {
+      responseType: 'blob', 
+    });
+    return URL.createObjectURL(response.data);
+  } catch (error) {
+    console.error('Error fetching image:', error);
+    return null;
+  }
+}
+
