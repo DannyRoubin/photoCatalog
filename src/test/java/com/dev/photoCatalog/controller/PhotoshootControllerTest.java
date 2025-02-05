@@ -118,6 +118,6 @@ public class PhotoshootControllerTest {
         mockMvc.perform(asyncDispatch(mvcResult))
                 .andDo(print())  // Print response for debugging if needed
                 .andExpect(status().isOk())
-                .andExpect(content().string("Photo added to Photoshoot successfully!"));
+                .andExpect(content().string("Photo added to Photoshoot successfully"));
     }
 }
