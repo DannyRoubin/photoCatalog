@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001", "http://localhost:4200"})
+@CrossOrigin(origins = {"https://witty-glacier-0b958821e.4.azurestaticapps.net"})
 @RequestMapping("/location")
 public class LocationController {
 
